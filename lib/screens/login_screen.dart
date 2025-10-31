@@ -18,7 +18,6 @@ class _LoginScreenState extends State<LoginScreen> {
     // TODO: Implement your login logic here
     String username = _usernameController.text;
     String password = _passwordController.text;
-    print('button pushed');
 
     // For demonstration, we will just navigate to HomeScreen
     Navigator.pushReplacement(

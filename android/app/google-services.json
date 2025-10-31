@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "298422184945",
+    "project_id": "cs2-investment-tracker",
+    "storage_bucket": "cs2-investment-tracker.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:298422184945:android:24ab14edcc806be3513250",
+        "android_client_info": {
+          "package_name": "com.devlio.cs2_investment_tracker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8pPfgXpcBafQwA8qijmrp6KrLvO5qciQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:298422184945:android:7a221cb149bc00a0513250",
+        "android_client_info": {
+          "package_name": "com.example.my_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8pPfgXpcBafQwA8qijmrp6KrLvO5qciQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
