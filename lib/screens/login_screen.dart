@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:my_app/screens/main_screen.dart';
 import 'package:my_app/services/login_service.dart';
@@ -48,6 +47,9 @@ class _LoginScreenState extends State<LoginScreen> {
         // Don't auto-login after registration
         await FirebaseAuth.instance.signOut();
 
+         // Exit if the widget is gone
+        if (!mounted) return;
+
         // ✅ FIXED showDialog syntax
         showDialog(
           context: context,
@@ -71,10 +73,14 @@ class _LoginScreenState extends State<LoginScreen> {
         );
       }
     } on FirebaseAuthException catch (e) {
+        // Exit if the widget is gone
+        if (!mounted) return;
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text(e.message ?? 'Firebase error')));
     } catch (e) {
+        // Exit if the widget is gone
+        if (!mounted) return;
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text(e.toString())));
