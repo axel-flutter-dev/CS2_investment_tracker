@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/screens/main_screen.dart';
-import 'dashboard_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
