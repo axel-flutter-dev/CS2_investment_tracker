@@ -1,37 +1,72 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:my_app/screens/main_screen.dart';
+import 'package:my_app/services/login_service.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
-
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
-
 class _LoginScreenState extends State<LoginScreen> {
-  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final LoginService _loginService = LoginService();
 
-   void _login() {
-    // TODO: Implement your login logic here
-    String username = _usernameController.text;
-    String password = _passwordController.text;
+  bool _isLoading = false;
+  bool _isLogin = true; // Toggle between login and register
 
-    // For demonstration, we will just navigate to HomeScreen
+  Future<void> _submit() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      if (_isLogin) {
+        // Login
+        final user = await _loginService.loginWithEmail(
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim(),
+        );
+        if (user != null) _navigateToDashboard();
+      } else {
+        // Register
+        final user = await _loginService.registerWithEmail(
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim(),
+        );
+        if (user != null) _navigateToDashboard();
+      }
+    } on FirebaseAuthException catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(e.message ?? 'Firebase error')));
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(e.toString())));
+    } finally {
+      setState(() => _isLoading = false);
+    }
+  }
+
+  void _navigateToDashboard() {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => const MainScreen()),
+      MaterialPageRoute(builder: (_) => const MainScreen()),
     );
-  } 
-  
+  }
+
+  void _toggleFormMode() {
+    setState(() => _isLogin = !_isLogin);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Login'),
-      ),
+      appBar: AppBar(title: const Text('Login')),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -39,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextField(
-                controller: _usernameController,
+                controller: _emailController,
                 decoration: const InputDecoration(labelText: 'Username'),
               ),
               TextField(
@@ -48,9 +83,19 @@ class _LoginScreenState extends State<LoginScreen> {
                 obscureText: true,
               ),
               const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _login,
-                child: const Text('Login'),
+              _isLoading
+                  ? const CircularProgressIndicator()
+                  : ElevatedButton(
+                      onPressed: _submit,
+                      child: const Text('Login'),
+                    ),
+              TextButton(
+                onPressed: _toggleFormMode,
+                child: Text(
+                  _isLogin
+                      ? 'Don\'t have an account? Register'
+                      : 'Already have an account? Login',
+                ),
               ),
             ],
           ),
