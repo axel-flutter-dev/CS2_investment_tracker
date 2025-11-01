@@ -1,5 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
+import 'package:my_app/widgets/add_item_widget.dart';
 
 class InventoryScreen extends StatelessWidget {
   const InventoryScreen({super.key});
@@ -15,12 +16,11 @@ class InventoryScreen extends StatelessWidget {
     {'name': 'Bow', 'value': 160, 'image': Icons.architecture},
   ];
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Inventory'),
-      ),
+      appBar: AppBar(title: const Text('Inventory')),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: GridView.builder(
@@ -35,7 +35,6 @@ class InventoryScreen extends StatelessWidget {
           itemBuilder: (context, index) {
             final item = items[index];
             return Column(
-              // TODO: update to generic item card widget
               children: [
                 Icon(item['image'], size: 40),
                 Text(item['name']),
@@ -43,6 +42,22 @@ class InventoryScreen extends StatelessWidget {
               ],
             );
           },
+        ),
+      ),
+      // This makes a button fixed at the bottom
+      bottomSheet: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ElevatedButton(
+          onPressed: () {
+            final userUid = FirebaseAuth.instance.currentUser?.uid;
+            if (userUid == null) return;
+            // Open Add Item Popup
+            showDialog(
+              context: context,
+              builder: (context) => AddItemPopup(uid: userUid),
+            );
+          },
+          child: const Text('Add Item'),
         ),
       ),
     );

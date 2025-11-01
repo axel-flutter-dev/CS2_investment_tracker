@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+
 class InventoryItem {
   final String name;
   final double purchasePrice;
@@ -32,6 +33,8 @@ class InventoryItem {
 
 class InventoryNotifier extends Notifier<List<InventoryItem>> {
   bool newAccount = false;
+  bool initExists = false;
+
   @override
   List<InventoryItem> build() {
     return [];
@@ -61,6 +64,7 @@ class InventoryNotifier extends Notifier<List<InventoryItem>> {
         'createdAt': FieldValue.serverTimestamp(),
       });
       newAccount = true;
+      initExists = true;
 
       state = [];
     } else {
