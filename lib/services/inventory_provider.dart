@@ -27,10 +27,11 @@ class InventoryItem {
       'quantity': quantity,
     };
   }
-  
+
 }
 
 class InventoryNotifier extends Notifier<List<InventoryItem>> {
+  bool newAccount = false;
   @override
   List<InventoryItem> build() {
     return [];
@@ -59,6 +60,7 @@ class InventoryNotifier extends Notifier<List<InventoryItem>> {
         'initialized': true,
         'createdAt': FieldValue.serverTimestamp(),
       });
+      newAccount = true;
 
       state = [];
     } else {
@@ -71,6 +73,7 @@ class InventoryNotifier extends Notifier<List<InventoryItem>> {
       state = snapshot.docs
           .map((doc) => InventoryItem.fromMap(doc.data()))
           .toList();
+      newAccount = false;
     }
   }
   void addItem(InventoryItem item, String uid) async {

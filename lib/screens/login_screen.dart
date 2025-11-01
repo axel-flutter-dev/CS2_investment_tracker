@@ -43,7 +43,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
           _emailController.clear();
           _passwordController.clear(); 
-          _navigateToDashboard();
+          _navigator();
         }
 
       } else {
@@ -132,7 +132,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     );
   }
 
-  void _navigateToDashboard() {
+  void _navigator() {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (_) => const MainScreen()),
