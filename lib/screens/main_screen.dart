@@ -21,7 +21,7 @@ class _MainScreenState extends State<MainScreen> {
     SettingsScreen(),
   ];
 
-  void _onItemTapped (int index) {
+  void _onItemTapped (int index) { 
     setState(() {
       _selectedIndex = index;
     });

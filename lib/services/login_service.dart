@@ -53,12 +53,12 @@ class LoginService {
     } on FirebaseAuthException catch (e) {
       throw Exception(e.message ?? 'Registration failed');
     } catch (e) {
-      print(e.toString());
       throw Exception(e.toString());
 
     }
   }
 
+  // Send password reset email
   Future<void> sendPasswordResetEmail(String email) async {
     if (email.isEmpty) {
       throw Exception('Please enter your email address.');

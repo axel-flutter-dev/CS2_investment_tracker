@@ -1,16 +1,18 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_app/screens/main_screen.dart';
 import 'package:my_app/services/login_service.dart';
+import 'package:my_app/services/inventory_provider.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+ ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends ConsumerState<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _resetEmailController = TextEditingController();
@@ -33,6 +35,12 @@ class _LoginScreenState extends State<LoginScreen> {
           password: _passwordController.text.trim(),
         );
         if (user != null) {
+          // Fetch or create inventory after successful login
+          await ref.read(inventoryProvider.notifier).fetchUserInventory(
+            user.uid,
+            user.email,
+          );
+
           _emailController.clear();
           _passwordController.clear(); 
           _navigateToDashboard();
